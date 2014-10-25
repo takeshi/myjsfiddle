@@ -3,17 +3,16 @@ package db
 import (
 	"database/sql"
 	"github.com/coopernurse/gorp"
-	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
+
+	// "myjsfiddle/server/model"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var dbmap *gorp.DbMap
 var filePath = "myjsfiddle.db"
-
-func init() {
-	dbmap = CreateDbMap(filePath)
-}
 
 func Transaction(f func() error) error {
 	dbmap := DbMap()
@@ -24,12 +23,16 @@ func Transaction(f func() error) error {
 	}
 	err = f()
 	if err != nil {
-		log.Print(err, "Transaction Rollback")
+		log.Print(err, "Transaction RError")
 		tx.Rollback()
 		return err
 	}
 	tx.Commit()
 	return nil
+}
+
+func init() {
+	dbmap = CreateDbMap(filePath)
 }
 
 func DbMap() *gorp.DbMap {
@@ -46,11 +49,13 @@ func CreateDbMap(filePath string) *gorp.DbMap {
 
 	// migrate(dbmap)
 
-	err = dbmap.CreateTablesIfNotExists()
-	checkErr(err, "Create tables failed")
-
 	return dbmap
 }
+
+// func migrate(dbmap *gorp.DbMap) {
+// 	dbmap.AddTable(model.Theme{}).SetKeys(true, "Id")
+// 	dbmap.AddTable(model.Contents{}).SetKeys(true, "Id")
+// }
 
 func checkErr(err error, msg string) {
 	if err != nil {
