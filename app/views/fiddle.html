@@ -1,0 +1,29 @@
+<div class="col-xs-12">
+  <div class="form-group">
+    <input type="text" class="form-control" ng-model="theme.title" placeholder="Title">
+  </div>
+</div>
+
+<div class="col-xs-2">
+  <button class="btn btn-block btn-default" ng-click="run()">Run</button>
+<!--   <button class="btn btn-block btn-default">Save</button>
+ --></div>
+
+<div class="col-xs-5">
+  <div class="area">
+    <textarea ng-model="theme.Contents.Html" placeholder="HTML"></textarea>
+  </div>
+  <div class="area">
+    <textarea ng-model="theme.Contents.Js" placeholder="JavaScript"></textarea>
+  </div>  
+</div>
+
+<div class="col-xs-5">
+  <div class="area">
+    <textarea ng-model="theme.Contents.Css" placeholder="CSS"></textarea>
+  </div>
+  <div class="area">
+    <iframe ng-src="{{currentProjectUrl}}"></iframe>
+  </div>
+
+</div>
