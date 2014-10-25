@@ -8,7 +8,7 @@
  * Controller of the myjsfiddleApp
  */
 angular.module('myjsfiddleApp')
-  .controller('FiddleCtrl', function ($scope,$state,$stateParams,$sce,ContentsService) {
+  .controller('FiddleCtrl', function ($scope,$state,$stateParams,$sce,ContentsService,$window) {
 
     var themeId = $stateParams.themeId;
     var contentsId = $stateParams.contentsId;
@@ -65,4 +65,7 @@ angular.module('myjsfiddleApp')
       });
     };
 
+    $scope.open = function(){
+      $window.location.href = '/app/run/'+ themeId +'/' + contentsId;
+    }
   });
