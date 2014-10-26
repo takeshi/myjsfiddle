@@ -8,23 +8,28 @@ import "myjsfiddle/server/db"
 
 import "strconv"
 
-// import "log"
+import "log"
 
 func ThemeController(m *martini.ClassicMartini) {
 
 	m.Get("/app/theme/:themeId/:contentsId", func(params martini.Params, r render.Render) {
 		themeId, _ := strconv.ParseInt(params["themeId"], 10, 64)
 		contentsId, _ := strconv.ParseInt(params["contentsId"], 10, 64)
-		theme, _ := model.GetTheme(themeId)
-		if theme == nil {
+		m, err := model.Get(&model.Theme{}, themeId)
+		if err != nil {
+			log.Println(err)
 			r.JSON(404, "Not Found")
 			return
 		}
-		contents, _ := model.GetContents(contentsId)
-		if contents != nil {
+		theme := m.(*model.Theme)
+		m, err = model.Get(&model.Contents{}, contentsId)
+		if err != nil {
+			log.Println(err)
+		} else {
+			contents := m.(*model.Contents)
 			theme.Contents = contents
 		}
-
+		log.Println(m)
 		r.JSON(200, theme)
 	})
 
@@ -32,14 +37,21 @@ func ThemeController(m *martini.ClassicMartini) {
 
 		db.Transaction(func() error {
 			var err error
-			if theme.Id == 0 {
-				err = theme.Create()
-			} else {
-				err = theme.Update()
-			}
+			log.Println(theme.Id, theme.GetId())
+			err = model.CreateOrUpdate(&theme)
 			if err != nil {
 				r.JSON(500, err)
 				return err
+			}
+			if theme.Contents != nil {
+				contents := theme.Contents
+				contents.ThemeId = theme.Id
+				contents.Id = 0
+				err = model.CreateOrUpdate(contents)
+				if err != nil {
+					r.JSON(500, err)
+					return err
+				}
 			}
 			r.JSON(200, theme)
 			return nil

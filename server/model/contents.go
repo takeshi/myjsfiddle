@@ -1,7 +1,5 @@
 package model
 
-import "myjsfiddle/server/db"
-
 type Contents struct {
 	Id      int64 `db:"ContentsId"`
 	ThemeId int64
@@ -12,17 +10,6 @@ type Contents struct {
 	Temp    bool
 }
 
-func (contens *Contents) Create() error {
-	dbmap := db.DbMap()
-	return dbmap.Insert(contens)
-}
-
-func GetContents(contentsId int64) (*Contents, error) {
-	dbMap := db.DbMap()
-	// theme := Theme{}
-	obj, err := dbMap.Get(Contents{}, contentsId)
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*Contents), err
+func (model *Contents) GetId() int64 {
+	return model.Id
 }
