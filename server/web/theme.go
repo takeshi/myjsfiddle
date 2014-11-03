@@ -5,10 +5,11 @@ import "github.com/martini-contrib/render"
 import "github.com/martini-contrib/binding"
 import "myjsfiddle/server/model"
 import "myjsfiddle/server/db"
+import "net/http"
 
 import "strconv"
-
 import "log"
+import "fmt"
 
 func ThemeController(m *martini.ClassicMartini) {
 
@@ -58,4 +59,32 @@ func ThemeController(m *martini.ClassicMartini) {
 		})
 	})
 
+	m.Post("/app/theme/fork", func(req *http.Request, r render.Render) {
+
+		db.Transaction(func() error {
+			var err error
+			theme := model.Theme{
+				Title: req.FormValue("title"),
+			}
+			contents := model.Contents{
+				Css:       req.FormValue("css"),
+				Js:        req.FormValue("js"),
+				Html:      req.FormValue("html"),
+				Directive: req.FormValue("directive"),
+			}
+			log.Println(theme.Id, theme.GetId())
+			err = model.CreateOrUpdate(&theme)
+			if err != nil {
+				r.JSON(500, err)
+				return err
+			}
+			err = model.CreateOrUpdate(&contents)
+			if err != nil {
+				r.JSON(500, err)
+				return err
+			}
+			r.Redirect(fmt.Sprintf("/#/fiddle/%d/%d/%s", theme.Id, contents.Id, req.FormValue("mode")))
+			return nil
+		})
+	})
 }

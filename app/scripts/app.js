@@ -15,10 +15,11 @@ angular
     'ngResource',
     'ui.router',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ui.codemirror'
   ])
   .config(function ($stateProvider,$urlRouterProvider) {
-    $urlRouterProvider.otherwise('/fiddle/new/0');
+    $urlRouterProvider.otherwise('/fiddle/new/0/css');
 
     $stateProvider
       .state('main', {
@@ -28,7 +29,7 @@ angular
       })
       
       .state('main.fiddle',{
-        url: '/fiddle/:themeId/:contentsId',
+        url: '/fiddle/:themeId/:contentsId/:mode',
         templateUrl: 'views/fiddle.html',
         controller: 'FiddleCtrl'        
       })

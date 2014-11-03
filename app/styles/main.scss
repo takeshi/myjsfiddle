@@ -1,7 +1,19 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
-@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
+
+.CodeMirror{
+  height: 98%;
+}
+
+.hiddenArea{
+  position: fixed;
+  top : -50000px;
+  left: -50000px;
+  width:0;
+  height:0;
+  z-index:-10;
+}
 
 .main {
   margin-right: 2em;

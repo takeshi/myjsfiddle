@@ -1,29 +1,53 @@
-<div class="col-xs-12">
+<form action="/app/theme/fork" method="post">
+  
+    <input type="hidden" name="mode" value="{{Mode.perspective}}">
+<div class="row">
+<div class="col-xs-2">
+</div>
+<div class="col-xs-5">
   <div class="form-group">
-    <input type="text" class="form-control" ng-model="theme.Title" placeholder="Title">
+    <input type="text" name="title" class="form-control" ng-model="theme.Title" placeholder="Title">
   </div>
 </div>
+<div class="col-xs-5">
+  <div class="pull-right"> 
+    <button type="button" class="btn btn-default" ng-click="cssMode()" ng-class="{'btn-info':Mode.perspective == 'css'}" >Sass</button>
+    <button type="button" class="btn btn-default" ng-click="directiveMode()" ng-class="{'btn-info':Mode.perspective == 'directive'}" >Directive Template</button>
+  </div>
 
+</div>
+</div>
+
+
+<div class="row">
 <div class="col-xs-2">
-  <button class="btn btn-block btn-default" ng-click="run()">Run</button>
-  <button class="btn btn-block btn-default" ng-click="open()">Open</button>
+  <button type="button" class="btn btn-block btn-default" ng-click="run()">Run</button>
+  <button type="button" class="btn btn-block btn-default" ng-click="open()">Open</button>
+  <input type="submit" class="btn btn-block btn-default" value="Fork" />
 </div>
 
 <div class="col-xs-5">
   <div class="area">
-    <textarea ng-model="theme.Contents.Html" placeholder="HTML"></textarea>
+    <textarea name="html" ui-codemirror="editorHtmlOptions" ng-model="theme.Contents.Html" placeholder="HTML"></textarea>
   </div>
   <div class="area">
-    <textarea ng-model="theme.Contents.Js" placeholder="JavaScript"></textarea>
+    <textarea name="js" ui-codemirror="editorJsOptions" ng-model="theme.Contents.Js" placeholder="JavaScript"></textarea>
   </div>  
 </div>
 
 <div class="col-xs-5">
-  <div class="area">
-    <textarea ng-model="theme.Contents.Css" placeholder="CSS"></textarea>
+  <div class="area" ng-class="{'hiddenArea' :Mode.perspective != 'css'}">
+    <textarea name="css" ui-codemirror="editorSassOptions" ng-model="theme.Contents.Css" placeholder="CSS"></textarea>
   </div>
+
+  <div class="area" ng-class="{'hiddenArea' : Mode.perspective != 'directive'}">
+    <textarea name="directive" ui-codemirror="editorHtmlOptions" ng-model="theme.Contents.Directive" placeholder="Directive"></textarea>
+  </div>
+
   <div class="area">
     <iframe ng-src="{{currentProjectUrl}}"></iframe>
   </div>
 
+ </div>
 </div>
+</form>

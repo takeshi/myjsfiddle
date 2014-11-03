@@ -12,36 +12,55 @@ angular.module('myjsfiddleApp')
 
     var themeId = $stateParams.themeId;
     var contentsId = $stateParams.contentsId;
+    var mode = $stateParams.mode;
+
+    $scope.Mode.perspective = mode;
 
     var initHtml = '' +
-'<div ng-app="sample">\n' +
-'  <div ng-repeat="a in [1,2,3] ">\n' +
-'    <p>{{a}}</p>\n' +
+'<div ng-controller="sampleCtrl" class="container">\n' +
+'  <div ng-repeat="item in items ">\n' +
+'    <p>{{item}}</p>\n' +
 '  </div>\n' +
+'  <div sample-directive="" ></div>' +
 '</div>\n'; 
     var initCss = '' +
-'p {\n' +
-' color:red\n' +
+'div{\n'+
+'  p {\n' +
+'   color:red\n' +
+'  }\n'+
 '}\n' +
 '';
     var initJs = '' +
 "angular\n" +
 "  .module('sample', [\n" +
-"    'ngAnimate',\n" +
-"    'ngCookies',\n" +
-"    'ngResource',\n" +
-"    'ui.router',\n" +
-"    'ngSanitize',\n" +
-"    'ngTouch'\n" +
-"  ]);"
+"  ]);\n" +
+" \n" +
+"angular\n" +
+" .module('sample')\n" +
+" .controller('sampleCtrl',function($scope){\n" +
+"    $scope.items = [1,2,3];\n" +
+" })\n" +
+" \n" +
+"angular\n" +
+" .module('sample')\n" +
+" .directive('sampleDirective',function(){\n" +
+"    return {\n" +
+"      templateUrl:'/directive.html' \n" +
+"    }" +
+" })\n" +
+';';
+
+    var initDirective = ''+
+"<div> Hello Directive </div>"
 '';
 
-    if(themeId == 'new'){
+    if(themeId == null || themeId == 'new'){
       $scope.theme = {
         Contents:{
           Html : initHtml,
           Css: initCss,
           Js : initJs,
+          Directive : initDirective
         }
       };
     }else{
@@ -60,7 +79,8 @@ angular.module('myjsfiddleApp')
 
         $state.go('main.fiddle',{
           themeId:theme.Id,
-          contentsId:theme.Contents.Id
+          contentsId:theme.Contents.Id,
+          mode:$scope.Mode.perspective
         });
       });
     };
