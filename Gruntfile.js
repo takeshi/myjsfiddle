@@ -72,7 +72,7 @@ module.exports = function (grunt) {
         livereload: 35729
       },
       proxies: [{
-            context: '/app',
+            context: '/fiddle/app',
             host: 'localhost',
             port: 8080,
             https: false,
@@ -91,7 +91,19 @@ module.exports = function (grunt) {
                 '/bower_components',
                 connect.static('./bower_components')
               ),
-              connect.static(appConfig.app)
+              connect.static(appConfig.app),
+              connect().use(
+                '/fiddle',
+                connect.static('.tmp')
+              ),
+              connect().use(
+                '/fiddle',
+                connect.static(appConfig.app)
+              ),
+              connect().use(
+                '/fiddle/bower_components',
+                connect.static('./bower_components')
+              ),
             ];
           }
         }

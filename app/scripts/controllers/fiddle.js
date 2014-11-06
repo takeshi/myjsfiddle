@@ -70,7 +70,7 @@ angular.module('myjsfiddleApp')
         console.log(theme)
       });
     }
-    $scope.currentProjectUrl = $sce.trustAsResourceUrl('/app/run/'+ themeId +'/' + contentsId);
+    $scope.currentProjectUrl = $sce.trustAsResourceUrl('/fiddle/app/run/'+ themeId +'/' + contentsId);
 
     $scope.run = function(){
       ContentsService.createTheme($scope.theme)
@@ -86,6 +86,6 @@ angular.module('myjsfiddleApp')
     };
 
     $scope.open = function(){
-      $window.location.href = '/app/run/'+ themeId +'/' + contentsId;
+      $window.location.href = '/fiddle/app/run/'+ themeId +'/' + contentsId;
     }
   });

@@ -13,11 +13,11 @@ angular.module('myjsfiddleApp')
     };
     
     ContentsService.prototype.find = function(themeId,id){
-      return $http.get('/app/theme/' + themeId +'/' + id);
+      return $http.get('/fiddle/app/theme/' + themeId +'/' + id);
     };
 
     ContentsService.prototype.createTheme = function(theme){
-      return $http.post('/app/theme',theme);
+      return $http.post('/fiddle/app/theme',theme);
     };
 
     return new ContentsService();

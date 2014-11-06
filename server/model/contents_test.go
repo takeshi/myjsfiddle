@@ -13,14 +13,8 @@ func TestContents(t *testing.T) {
 	theme := model.Theme{
 		Title: "Sample",
 	}
-	// _ = dbmap.Insert(&theme)
 	model.CreateOrUpdate(&theme)
 
-	// contents := theme.CreateContents("SampleHtml", "SampleJS", "SampleCSS")
-	// if theme.Id != contents.ThemeId {
-	// 	t.Errorf("expected %v actual %v", theme.Id, contents.ThemeId)
-	// }
-	// t.Fail()
 }
 
 type GetIder interface {
@@ -39,10 +33,6 @@ type B struct {
 func (a *A) GetId() int64 {
 	return a.Id
 }
-
-// func (b *B) GetId() int64 {
-// 	return b.Id
-// }
 
 func Test2(t *testing.T) {
 	b := B{}

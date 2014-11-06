@@ -13,7 +13,7 @@ import "fmt"
 
 func ThemeController(m *martini.ClassicMartini) {
 
-	m.Get("/app/theme/:themeId/:contentsId", func(params martini.Params, r render.Render) {
+	m.Get("/fiddle/app/theme/:themeId/:contentsId", func(params martini.Params, r render.Render) {
 		themeId, _ := strconv.ParseInt(params["themeId"], 10, 64)
 		contentsId, _ := strconv.ParseInt(params["contentsId"], 10, 64)
 		m, err := model.Get(&model.Theme{}, themeId)
@@ -34,7 +34,7 @@ func ThemeController(m *martini.ClassicMartini) {
 		r.JSON(200, theme)
 	})
 
-	m.Post("/app/theme", binding.Bind(model.Theme{}), func(theme model.Theme, r render.Render) {
+	m.Post("/fiddle/app/theme", binding.Bind(model.Theme{}), func(theme model.Theme, r render.Render) {
 
 		db.Transaction(func() error {
 			var err error
@@ -59,7 +59,7 @@ func ThemeController(m *martini.ClassicMartini) {
 		})
 	})
 
-	m.Post("/app/theme/fork", func(req *http.Request, r render.Render) {
+	m.Post("/fiddle/app/theme/fork", func(req *http.Request, r render.Render) {
 
 		db.Transaction(func() error {
 			var err error
@@ -72,18 +72,18 @@ func ThemeController(m *martini.ClassicMartini) {
 				Html:      req.FormValue("html"),
 				Directive: req.FormValue("directive"),
 			}
-			log.Println(theme.Id, theme.GetId())
 			err = model.CreateOrUpdate(&theme)
 			if err != nil {
 				r.JSON(500, err)
 				return err
 			}
+			contents.ThemeId = theme.Id
 			err = model.CreateOrUpdate(&contents)
 			if err != nil {
 				r.JSON(500, err)
 				return err
 			}
-			r.Redirect(fmt.Sprintf("/#/fiddle/%d/%d/%s", theme.Id, contents.Id, req.FormValue("mode")))
+			r.Redirect(fmt.Sprintf("/fiddle/#/fiddle/%d/%d/%s", theme.Id, contents.Id, req.FormValue("mode")))
 			return nil
 		})
 	})

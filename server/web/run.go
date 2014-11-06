@@ -11,19 +11,13 @@ import "github.com/moovweb/gosass"
 
 func RunController(m *martini.ClassicMartini) {
 
-	m.Get("/app/run/:themeId/:id", func(params martini.Params, r render.Render) {
+	m.Get("/fiddle/app/run/:themeId/:id", func(params martini.Params, r render.Render) {
 		dbMap := db.DbMap()
 		contents := model.Contents{}
 		err := dbMap.SelectOne(&contents, "select * from Contents where ThemeId=? and ContentsId=?", params["themeId"], params["id"])
 		if err != nil {
 			log.Print(err, "select contents error")
-			r.HTML(404, "hello", map[string]interface{}{
-				"Title":     template.HTML("No Contents"),
-				"Css":       template.CSS(""),
-				"Js":        template.JS(""),
-				"Html":      template.HTML("<div class=\"container\"> No Contents </div>"),
-				"Directive": template.JS(""),
-			})
+			r.JSON(200, "No Contents")
 			return
 		}
 		obj, _ := model.Get(&model.Theme{}, contents.ThemeId)

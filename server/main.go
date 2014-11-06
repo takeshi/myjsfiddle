@@ -16,9 +16,16 @@ func Server() {
 	dbMap := db.DbMap()
 	model.Migrate(dbMap)
 	m := martini.Classic()
+
 	m.Use(render.Renderer())
 	m.Use(martini.Static("dist"))
 	m.Use(martini.Static("./"))
+
+	var options martini.StaticOptions
+	options.Prefix = "/fiddle"
+	m.Use(martini.Static("dist", options))
+	m.Use(martini.Static("./", options))
+
 	web.Init(m)
 	m.Run()
 
